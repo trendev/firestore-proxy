@@ -4,6 +4,7 @@
   "description": "Firestore Proxy",
   "main": "server.js",
   "scripts": {
+    "tsc": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
