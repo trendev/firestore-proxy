@@ -19,6 +19,8 @@
   },
   "homepage": "https://github.com/trendev/firestore-proxy#readme",
   "dependencies": {
+    "@types/express": "^4.16.1",
+    "@types/node": "^11.11.3",
     "express": "^4.16.4",
     "typescript": "^3.3.3333"
   }
