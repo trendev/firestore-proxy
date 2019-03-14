@@ -10,4 +10,4 @@ app.use(morgan('dev'));
 app.get('/', (req, res) => res.json(creds));
 
 const port = process.env.PORT || 9000;
-app.listen(port, () => console.log(`Server started and listening on port [${port}]`));
+app.listen(port, () => console.log(`Server started and listening on port [ ${port} ]`));
