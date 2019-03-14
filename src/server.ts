@@ -1,13 +1,17 @@
 import express from 'express';
 import morgan from 'morgan';
-import creds from './creds/serviceAccountKey.json';
 import bodyParser from 'body-parser';
+
+//TODO : firestore setup
+//TODO : move this import into a class dedicated to firestore setup
+import creds from './creds/serviceAccountKey.json';
 
 const app: express.Application = express();
 
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 
+//TODO : use controller instead
 const jwtwhitemapRouter = express.Router();
 jwtwhitemapRouter.get('/', (req, res) => {
     res.json({
