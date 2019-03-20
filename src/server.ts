@@ -1,3 +1,4 @@
+import { JWTWhiteMapController } from './controllers/JWTWhiteMapController';
 import express from 'express';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
@@ -10,14 +11,7 @@ const app: express.Application = express();
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 
-//TODO : use controller instead
-const jwtwhitemapRouter = express.Router();
-jwtwhitemapRouter.get('/', (req, res) => {
-    res.json({
-        creds: creds,
-        type: 'jwtwhitemap'
-    });
-});
+const jwtwmctrl = new JWTWhiteMapController(creds);
 
 const jwtrevokedsetRouter = express.Router();
 jwtrevokedsetRouter.get('/', (req, res) => {
@@ -27,7 +21,7 @@ jwtrevokedsetRouter.get('/', (req, res) => {
     });
 });
 
-app.use('/jwtwhitemap', jwtwhitemapRouter);
+app.use('/jwtwhitemap', jwtwmctrl.getRouter());
 app.use('/jwtrevokedset', jwtrevokedsetRouter);
 
 const port = process.env.PORT || 9000;
