@@ -1,4 +1,4 @@
-import { JWTAbstractController } from "./JWTAbstractController";
+import { JWTAbstractController } from "./jwt-abstract-controller";
 
 export class JWTRevokedSetController extends JWTAbstractController {
 

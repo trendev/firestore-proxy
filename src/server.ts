@@ -1,11 +1,12 @@
 import bodyParser from "body-parser";
 import express from "express";
 import morgan from "morgan";
-import { JWTRevokedSetController } from "./controllers/JWTRevokedSetController";
-import { JWTWhiteMapController } from "./controllers/JWTWhiteMapController";
+
+import { JWTRevokedSetController } from "./controllers/jwt-revoked-set-controller.js";
+import { JWTWhiteMapController } from "./controllers/jwt-white-map-controller.js";
+import creds from "./creds/service-account-key.json";
 
 // TODO : inits firestore here and provide the db to the controllers
-import creds from "./creds/serviceAccountKey.json";
 
 const app: express.Application = express();
 
