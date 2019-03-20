@@ -1,4 +1,3 @@
-
 import { JWTAbstractController } from './JWTAbstractController';
 
 export class JWTWhiteMapController extends JWTAbstractController {

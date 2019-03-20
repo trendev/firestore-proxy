@@ -1,19 +1,14 @@
-import express = require('express');
+import { JWTAbstractController } from './JWTAbstractController';
 
-export class JWTRevokedSetController {
+export class JWTRevokedSetController extends JWTAbstractController{
     
-    private _router = express.Router();
-
-    public constructor(public creds: any) {
+    public constructor(creds: any) {
+        super(creds);
         this.init();
     }
 
-    public Router() {
-        return this._router;
-    }
-
     private init() {
-        this._router.get('/', (req, res) => {
+        this.Router().get('/', (req, res) => {
             res.json({
                 creds: this.creds,
                 date: new Date().getTime(),
