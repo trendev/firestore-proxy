@@ -2,11 +2,19 @@ import bodyParser from "body-parser";
 import express from "express";
 import morgan from "morgan";
 
+import admin, { ServiceAccount } from "firebase-admin";
+
 import { JWTRevokedSetController } from "./controllers/jwt-revoked-set-controller.js";
 import { JWTWhiteMapController } from "./controllers/jwt-white-map-controller.js";
 import creds from "./creds/service-account-key.json";
 
-// TODO : inits firestore here and provide the db to the controllers
+// TODO : provide the db to the controllers
+const credentials = creds as ServiceAccount;
+admin.initializeApp({
+    credential: admin.credential.cert(credentials),
+});
+
+const db = admin.firestore();
 
 const app: express.Application = express();
 
