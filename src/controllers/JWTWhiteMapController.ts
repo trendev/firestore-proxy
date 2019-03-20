@@ -1,4 +1,4 @@
-import { JWTAbstractController } from './JWTAbstractController';
+import { JWTAbstractController } from "./JWTAbstractController";
 
 export class JWTWhiteMapController extends JWTAbstractController {
 
@@ -8,11 +8,11 @@ export class JWTWhiteMapController extends JWTAbstractController {
     }
 
     private init() {
-        this.Router().get('/', (req, res) => {
+        this.Router().get("/", (req, res) => {
             res.json({
                 creds: this.creds,
                 date: new Date().getTime(),
-                type: 'jwtwhitemap'
+                type: "jwtwhitemap",
             });
         });
     }

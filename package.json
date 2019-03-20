@@ -4,7 +4,9 @@
   "description": "Firestore Proxy",
   "main": "server.js",
   "scripts": {
+    "build": "tslint --fix 'src/**/*.ts' && tsc",
     "tsc": "tsc",
+    "tslint": "tslint --fix 'src/**/*.ts'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -27,5 +29,8 @@
     "express": "^4.16.4",
     "morgan": "^1.9.1",
     "typescript": "^3.3.4000"
+  },
+  "devDependencies": {
+    "tslint": "^5.14.0"
   }
 }
