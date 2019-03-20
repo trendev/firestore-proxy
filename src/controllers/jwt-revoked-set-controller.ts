@@ -8,7 +8,7 @@ export class JWTRevokedSetController extends JWTAbstractController {
     }
 
     private init() {
-        this.Router().get("/", (req, res) => {
+        this.Router().get("/", (req, res, next) => {
             res.json({
                 creds: this.creds,
                 date: new Date().getTime(),
