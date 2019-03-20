@@ -8,7 +8,7 @@ export class JWTWhiteMapController {
         this.init();
     }
 
-    public getRouter() {
+    public Router() {
         return this._router;
     }
 

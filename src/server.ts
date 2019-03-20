@@ -21,7 +21,7 @@ jwtrevokedsetRouter.get('/', (req, res) => {
     });
 });
 
-app.use('/jwtwhitemap', jwtwmctrl.getRouter());
+app.use('/jwtwhitemap', jwtwmctrl.Router());
 app.use('/jwtrevokedset', jwtrevokedsetRouter);
 
 const port = process.env.PORT || 9000;
