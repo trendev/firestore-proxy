@@ -2,8 +2,7 @@ import express from 'express';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
 
-//TODO : firestore setup
-//TODO : move this import into a class dedicated to firestore setup
+//TODO : inits firestore here and provide the db to the controllers
 import creds from './creds/serviceAccountKey.json';
 
 const app: express.Application = express();
