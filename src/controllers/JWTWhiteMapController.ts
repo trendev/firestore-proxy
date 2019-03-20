@@ -1,21 +1,18 @@
-import express = require('express');
 
-export class JWTWhiteMapController {
-    
-    private _router = express.Router();
+import { JWTAbstractController } from './JWTAbstractController';
 
-    public constructor(public creds: any) {
+export class JWTWhiteMapController extends JWTAbstractController {
+
+    public constructor(creds: any) {
+        super(creds);
         this.init();
     }
 
-    public Router() {
-        return this._router;
-    }
-
     private init() {
-        this._router.get('/', (req, res) => {
+        this.Router().get('/', (req, res) => {
             res.json({
                 creds: this.creds,
+                date: new Date().getTime(),
                 type: 'jwtwhitemap'
             });
         });

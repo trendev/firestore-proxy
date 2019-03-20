@@ -1,3 +1,4 @@
+import { JWTRevokedSetController } from './controllers/JWTRevokedSetController';
 import { JWTWhiteMapController } from './controllers/JWTWhiteMapController';
 import express from 'express';
 import morgan from 'morgan';
@@ -12,17 +13,10 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 
 const jwtwmctrl = new JWTWhiteMapController(creds);
-
-const jwtrevokedsetRouter = express.Router();
-jwtrevokedsetRouter.get('/', (req, res) => {
-    res.json({
-        creds: creds,
-        type: 'jwtrevokedset'
-    });
-});
+const jwtrsctrl = new JWTRevokedSetController(creds);
 
 app.use('/jwtwhitemap', jwtwmctrl.Router());
-app.use('/jwtrevokedset', jwtrevokedsetRouter);
+app.use('/jwtrevokedset', jwtrsctrl.Router());
 
 const port = process.env.PORT || 9000;
 app.listen(port, () => console.log(`${Date()} : Server started and listening on port [ ${port} ]`));
