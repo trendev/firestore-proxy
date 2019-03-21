@@ -10,10 +10,20 @@ export class JWTWhiteMapController extends JWTAbstractController {
 
     private init() {
         this.Router().get("/", (req, res, next) => {
-            res.json({
+            const docRef = this.db.collection("users").doc("jsie");
+            const setData = docRef.set({
+                born: 1982,
                 date: new Date().getTime(),
-                type: "jwtwhitemap",
-            });
+                first: "Julien",
+                last: "Sié",
+            })
+                .then((result) => {
+                    res.json({
+                        data: result,
+                        type: "jwtwhitemap",
+                    });
+                })
+                .catch(next);
         });
     }
 }
