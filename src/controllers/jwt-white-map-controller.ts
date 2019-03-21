@@ -11,7 +11,7 @@ export class JWTWhiteMapController extends JWTAbstractController {
     private init() {
         this.Router().get("/", (req, res, next) => {
             const docRef = this.db.collection("users").doc("jsie");
-            const setData = docRef.set({
+            docRef.set({
                 born: 1982,
                 date: new Date().getTime(),
                 first: "Julien",
