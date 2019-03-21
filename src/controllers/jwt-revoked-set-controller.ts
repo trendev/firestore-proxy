@@ -12,8 +12,9 @@ export class JWTRevokedSetController extends JWTAbstractController {
 
     private init() {
         this.Router()
+            .use("/", this.debugInputBody)
             .get("/", this.getAll)
-            .delete("/bulk-removes", this.bulkRemoves)
+            .put("/bulk-removes", this.bulkRemoves)
             .post("/", this.create)
             .post("/bulk-creation", this.bulkCreation)
             .delete("/:token", this.delete);

@@ -1,6 +1,8 @@
 import { Firestore } from "@google-cloud/firestore";
 import express = require("express");
 
+import { NextFunction, Request, Response } from "express";
+
 export abstract class JWTAbstractController {
 
     private _router = express.Router();
@@ -10,6 +12,11 @@ export abstract class JWTAbstractController {
 
     public Router() {
         return this._router;
+    }
+
+    protected debugInputBody = (req: Request, res: Response, next: NextFunction) => {
+        console.log("Body : " + JSON.stringify(req.body, null, 2));
+        next();
     }
 
 }

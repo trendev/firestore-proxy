@@ -12,9 +12,10 @@ export class JWTWhiteMapController extends JWTAbstractController {
 
     private init() {
         this.Router()
+            .use("/", this.debugInputBody)
             .get("/", this.getAll)
             .put("/bulk-updates", this.bulkUpdates)
-            .delete("/bulk-removes", this.bulkRemoves)
+            .put("/bulk-removes", this.bulkRemoves)
             .post("/", this.create)
             .put("/", this.update)
             .delete("/:email", this.delete);
