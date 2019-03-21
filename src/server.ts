@@ -8,7 +8,6 @@ import { JWTRevokedSetController } from "./controllers/jwt-revoked-set-controlle
 import { JWTWhiteMapController } from "./controllers/jwt-white-map-controller.js";
 import creds from "./creds/service-account-key.json";
 
-// TODO : provide the db to the controllers
 const credentials = creds as ServiceAccount;
 admin.initializeApp({
     credential: admin.credential.cert(credentials),
@@ -21,8 +20,8 @@ const app: express.Application = express();
 app.use(morgan("dev"));
 app.use(bodyParser.json());
 
-const jwtwmctrl = new JWTWhiteMapController(creds);
-const jwtrsctrl = new JWTRevokedSetController(creds);
+const jwtwmctrl = new JWTWhiteMapController(db);
+const jwtrsctrl = new JWTRevokedSetController(db);
 
 app.use("/jwtwhitemap", jwtwmctrl.Router());
 app.use("/jwtrevokedset", jwtrsctrl.Router());

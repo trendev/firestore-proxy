@@ -1,10 +1,11 @@
+import { Firestore } from "@google-cloud/firestore";
 import express = require("express");
 
 export abstract class JWTAbstractController {
 
     private _router = express.Router();
 
-    public constructor(public creds: any) {
+    public constructor(protected db: Firestore) {
     }
 
     public Router() {
