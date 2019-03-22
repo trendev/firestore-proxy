@@ -14,8 +14,6 @@ export class JWTWhiteMapController extends JWTAbstractController {
         this.Router()
             .use("/", this.debugInputBody)
             .get("/", this.getAll)
-            .put("/bulk-updates", this.bulkUpdates)
-            .put("/bulk-removes", this.bulkRemoves)
             .post("/", this.create)
             .put("/", this.update)
             .delete("/:email", this.delete);
@@ -23,14 +21,6 @@ export class JWTWhiteMapController extends JWTAbstractController {
 
     private getAll = (req: Request, res: Response, next: NextFunction) => {
         res.json([]);
-    }
-
-    private bulkUpdates = (req: Request, res: Response, next: NextFunction) => {
-        res.json(req.body);
-    }
-
-    private bulkRemoves = (req: Request, res: Response, next: NextFunction) => {
-        res.json(req.body);
     }
 
     private create = (req: Request, res: Response, next: NextFunction) => {
