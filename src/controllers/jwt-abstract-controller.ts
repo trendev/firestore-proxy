@@ -30,7 +30,7 @@ export abstract class JWTAbstractController {
                 } else {
                     console.log(`Found ${snapshot.size} ${this.collection} documents`);
                     const docs = snapshot.docs;
-                    res.json(docs.map((d) => d.data));
+                    res.json(docs.map((d) => d.data()));
                 }
             })
             .catch((err) => {
