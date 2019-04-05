@@ -20,7 +20,21 @@ export class JWTWhiteMapController extends JWTAbstractController {
     }
 
     private getAll = (req: Request, res: Response, next: NextFunction) => {
-        res.json([]);
+        this.db.collection("jwtwhitemap").get()
+            .then((snapshot) => {
+                if (snapshot.empty) {
+                    console.warn("Error getting jwtwhitemap : no document found");
+                    res.json([]);
+                } else {
+                    console.log(`Found ${snapshot.size} jwtwhitemap documents`);
+                    const docs = snapshot.docs;
+                    res.json(docs.map((d) => d.data));
+                }
+            })
+            .catch((err) => {
+                console.error("Error getting jwtwhitemap", err);
+                res.status(500).send(err);
+            });
     }
 
     private create = (req: Request, res: Response, next: NextFunction) => {
