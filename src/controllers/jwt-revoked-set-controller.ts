@@ -5,7 +5,7 @@ import { NextFunction, Request, Response } from "express";
 
 export class JWTRevokedSetController extends JWTAbstractController {
 
-    public constructor(db: Firestore) {
+    public constructor(db: Firestore, public collection = "jwtrevokedset") {
         super(db);
         this.init();
     }
@@ -17,10 +17,6 @@ export class JWTRevokedSetController extends JWTAbstractController {
             .post("/", this.create)
             .post("/bulk-creation", this.bulkCreation)
             .delete("/:token", this.delete);
-    }
-
-    private getAll = (req: Request, res: Response, next: NextFunction) => {
-        res.json([]);
     }
 
     private create = (req: Request, res: Response, next: NextFunction) => {
