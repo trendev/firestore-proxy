@@ -22,8 +22,9 @@ export class JWTWhiteMapController extends JWTAbstractController {
     }
 
     private create = (req: Request, res: Response, next: NextFunction) => {
-
         const entry: JWTWhiteMapEntry = req.body;
+
+        console.log(`Creating ${this.collection} document for user [${entry.email}]`);
 
         this.db.collection(this.collection)
             .doc(entry.email)
@@ -41,6 +42,8 @@ export class JWTWhiteMapController extends JWTAbstractController {
     private update = (req: Request, res: Response, next: NextFunction) => {
         const entry: JWTWhiteMapEntry = req.body;
 
+        console.log(`Updating ${this.collection} document for user [${entry.email}]`);
+
         this.db.collection(this.collection)
             .doc(entry.email)
             .set(entry)
@@ -55,7 +58,19 @@ export class JWTWhiteMapController extends JWTAbstractController {
     }
 
     private delete = (req: Request, res: Response, next: NextFunction) => {
-        // TODO : use req.params.email or req.params.name
-        res.sendStatus(200);
+
+        console.log(`Deleting ${this.collection} document for user [${req.params.email}]`);
+
+        this.db.collection(this.collection)
+            .doc(req.params.email)
+            .delete()
+            .then((w) => {
+                console.log(`${this.collection} document deleted at ${w.writeTime.toDate()}`);
+                res.sendStatus(200);
+            })
+            .catch((err) => {
+                console.error(`Error deleting ${this.collection} document for user ${req.params.email}`, err);
+                res.status(500).send(err);
+            });
     }
 }

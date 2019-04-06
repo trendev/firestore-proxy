@@ -17,18 +17,20 @@ export abstract class JWTAbstractController {
     }
 
     protected debugInputBody = (req: Request, res: Response, next: NextFunction) => {
-        console.log("Body : " + JSON.stringify(req.body, null, 2));
+        console.log("Request Body : " + JSON.stringify(req.body, null, 2));
         next();
     }
 
     protected getAll = (req: Request, res: Response, next: NextFunction) => {
+        console.log(`Getting all ${this.collection} documents`);
+
         this.db.collection(this.collection).get()
             .then((snapshot) => {
                 if (snapshot.empty) {
-                    console.warn(`Getting ${this.collection} : no document found`);
+                    console.warn(`Getting all ${this.collection} documents : no document found`);
                     res.json([]);
                 } else {
-                    console.log(`Found ${snapshot.size} ${this.collection} documents`);
+                    console.log(`${snapshot.size} documents found in collection ${this.collection}...`);
                     const docs = snapshot.docs;
                     res.json(docs.map((d) => d.data()));
                 }
