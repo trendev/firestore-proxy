@@ -55,6 +55,7 @@ export class JWTWhiteMapController extends JWTAbstractController {
     }
 
     private delete = (req: Request, res: Response, next: NextFunction) => {
+        // TODO : use req.params.email or req.params.name
         res.sendStatus(200);
     }
 }
