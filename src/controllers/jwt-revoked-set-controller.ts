@@ -34,6 +34,11 @@ export class JWTRevokedSetController extends JWTAbstractController {
             `${this.collection} document created`);
     }
 
+    /**
+     * -- TODO --
+     * This function is used to revoke multiple JWT -> revoke all access of a user.
+     * This mechanism should be implemented on the core api first (Java).
+     */
     private _bulkCreation = (req: Request, res: Response, next: NextFunction) => {
         res.status(201).json(req.body);
     }
