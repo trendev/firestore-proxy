@@ -16,12 +16,12 @@ export class JWTWhiteMapController extends JWTAbstractController {
         this.Router()
             // .use("/", this.debugInputBody)
             .get("/", this.getAll)
-            .post("/", this.create)
-            .put("/", this.update)
-            .delete("/:email", this.delete);
+            .post("/", this._create)
+            .put("/", this._update)
+            .delete("/:email", this._delete);
     }
 
-    private create = (req: Request, res: Response, next: NextFunction) => {
+    private _create = (req: Request, res: Response, next: NextFunction) => {
 
         const entry: JWTWhiteMapEntry = req.body;
 
@@ -36,7 +36,7 @@ export class JWTWhiteMapController extends JWTAbstractController {
             `${this.collection} document created`);
     }
 
-    private update = (req: Request, res: Response, next: NextFunction) => {
+    private _update = (req: Request, res: Response, next: NextFunction) => {
         const entry: JWTWhiteMapEntry = req.body;
 
         console.log(`Updating ${this.collection} document for user [${entry.email}]`);
@@ -50,20 +50,14 @@ export class JWTWhiteMapController extends JWTAbstractController {
             `${this.collection} document updated`);
     }
 
-    private delete = (req: Request, res: Response, next: NextFunction) => {
+    private _delete = (req: Request, res: Response, next: NextFunction) => {
 
         console.log(`Deleting ${this.collection} document for user [${req.params.email}]`);
 
-        this.db.collection(this.collection)
-            .doc(req.params.email)
-            .delete()
-            .then((w) => {
-                console.log(`${this.collection} document deleted at ${w.writeTime.toDate()}`);
-                res.sendStatus(200);
-            })
-            .catch((err) => {
-                console.error(`Error deleting ${this.collection} document for user ${req.params.email}`, err);
-                res.status(500).send(err);
-            });
+        this.delete(
+            req,
+            res,
+            next,
+            req.params.email);
     }
 }

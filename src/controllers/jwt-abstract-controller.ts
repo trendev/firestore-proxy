@@ -51,6 +51,14 @@ export abstract class JWTAbstractController {
 
         console.log(`Saving ${this.collection} document in Firestore`);
 
+        if (!entry) {
+            throw new Error("Document to save cannot be null or undefined");
+        }
+
+        if (!document) {
+            throw new Error("Document id is not set");
+        }
+
         this.db.collection(this.collection)
             .doc(document)
             .set(entry)
@@ -60,6 +68,29 @@ export abstract class JWTAbstractController {
             })
             .catch((err) => {
                 console.error(`Error saving ${this.collection}`, err);
+                res.status(500).send(err);
+            });
+    }
+
+    protected delete = (
+        req: Request,
+        res: Response,
+        next: NextFunction,
+        document: string) => {
+
+        if (!document) {
+            throw new Error("Document id is not set");
+        }
+
+        this.db.collection(this.collection)
+            .doc(document)
+            .delete()
+            .then((w) => {
+                console.log(`${this.collection} document deleted at ${w.writeTime.toDate()}`);
+                res.sendStatus(200);
+            })
+            .catch((err) => {
+                console.error(`Error deleting ${this.collection} document ${document}`, err);
                 res.status(500).send(err);
             });
     }
