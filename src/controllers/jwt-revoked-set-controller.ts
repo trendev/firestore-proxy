@@ -39,6 +39,12 @@ export class JWTRevokedSetController extends JWTAbstractController {
     }
 
     private _delete = (req: Request, res: Response, next: NextFunction) => {
-        res.sendStatus(200);
+        console.log(`Deleting ${this.collection} document [${req.params.token}]`);
+
+        this.delete(
+            req,
+            res,
+            next,
+            req.params.token);
     }
 }
