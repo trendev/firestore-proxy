@@ -1,4 +1,5 @@
 import { Firestore } from "@google-cloud/firestore";
+import { JWTRecord } from "./../entities/jwt-record";
 import { JWTAbstractController } from "./jwt-abstract-controller";
 
 import { NextFunction, Request, Response } from "express";
@@ -20,7 +21,17 @@ export class JWTRevokedSetController extends JWTAbstractController {
     }
 
     private _create = (req: Request, res: Response, next: NextFunction) => {
-        res.status(201).json(req.body);
+        const entry: JWTRecord = req.body;
+
+        console.log(`Creating ${this.collection} document`);
+
+        this.save(
+            req,
+            res,
+            next,
+            entry,
+            entry.token,
+            `${this.collection} document created`);
     }
 
     private _bulkCreation = (req: Request, res: Response, next: NextFunction) => {
