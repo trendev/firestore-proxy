@@ -22,21 +22,18 @@ export class JWTWhiteMapController extends JWTAbstractController {
     }
 
     private create = (req: Request, res: Response, next: NextFunction) => {
+
         const entry: JWTWhiteMapEntry = req.body;
 
         console.log(`Creating ${this.collection} document for user [${entry.email}]`);
 
-        this.db.collection(this.collection)
-            .doc(entry.email)
-            .set(entry)
-            .then((w) => {
-                console.log(`${this.collection} document created at ${w.writeTime.toDate()}`);
-                res.status(201).json(req.body);
-            })
-            .catch((err) => {
-                console.error(`Error creating ${this.collection}`, err);
-                res.status(500).send(err);
-            });
+        this.save(
+            req,
+            res,
+            next,
+            entry,
+            entry.email,
+            `${this.collection} document created`);
     }
 
     private update = (req: Request, res: Response, next: NextFunction) => {
@@ -44,17 +41,13 @@ export class JWTWhiteMapController extends JWTAbstractController {
 
         console.log(`Updating ${this.collection} document for user [${entry.email}]`);
 
-        this.db.collection(this.collection)
-            .doc(entry.email)
-            .set(entry)
-            .then((w) => {
-                console.log(`${this.collection} document updated at ${w.writeTime.toDate()}`);
-                res.json(req.body);
-            })
-            .catch((err) => {
-                console.error(`Error updating ${this.collection}`, err);
-                res.status(500).send(err);
-            });
+        this.save(
+            req,
+            res,
+            next,
+            entry,
+            entry.email,
+            `${this.collection} document updated`);
     }
 
     private delete = (req: Request, res: Response, next: NextFunction) => {

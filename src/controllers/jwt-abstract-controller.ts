@@ -40,4 +40,27 @@ export abstract class JWTAbstractController {
                 res.status(500).send(err);
             });
     }
+
+    protected save = <T>(
+        req: Request,
+        res: Response,
+        next: NextFunction,
+        entry: T,
+        document: string,
+        successmsg: string) => {
+
+        console.log(`Saving ${this.collection} document in Firestore`);
+
+        this.db.collection(this.collection)
+            .doc(document)
+            .set(entry)
+            .then((w) => {
+                console.log(`${successmsg} at ${w.writeTime.toDate()}`);
+                res.status(201).json(req.body);
+            })
+            .catch((err) => {
+                console.error(`Error saving ${this.collection}`, err);
+                res.status(500).send(err);
+            });
+    }
 }
