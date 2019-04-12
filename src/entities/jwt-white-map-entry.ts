@@ -1,5 +1,5 @@
-import { JWTRecord } from "./jwt-record";
+import JWTRecord from "./jwt-record";
 
-export class JWTWhiteMapEntry {
+export default class JWTWhiteMapEntry {
     constructor(public email: string, public records: JWTRecord[]) { }
 }

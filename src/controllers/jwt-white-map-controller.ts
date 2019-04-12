@@ -3,7 +3,7 @@ import { JWTAbstractController } from "./jwt-abstract-controller";
 
 import { NextFunction, Request, Response } from "express";
 
-import { JWTWhiteMapEntry } from "./../entities/jwt-white-map-entry";
+import JWTWhiteMapEntry from "./../entities/jwt-white-map-entry";
 
 export class JWTWhiteMapController extends JWTAbstractController {
 

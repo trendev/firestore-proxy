@@ -1,5 +1,5 @@
 import { Firestore } from "@google-cloud/firestore";
-import { JWTRecord } from "./../entities/jwt-record";
+import JWTRecord from "./../entities/jwt-record";
 import { JWTAbstractController } from "./jwt-abstract-controller";
 
 import { NextFunction, Request, Response } from "express";
