@@ -1,5 +1,5 @@
 import { Firestore } from "@google-cloud/firestore";
-import express = require("express");
+import express from "express";
 
 import { NextFunction, Request, Response } from "express";
 
