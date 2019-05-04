@@ -7,9 +7,10 @@ export abstract class JWTAbstractController {
 
     public readonly abstract collection: string;
 
-    private _router = express.Router();
+    private _router: express.Router;
 
     public constructor(protected db: Firestore) {
+        this._router = express.Router();
     }
 
     public Router() {
