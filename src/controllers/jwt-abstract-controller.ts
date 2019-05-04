@@ -1,6 +1,6 @@
 import { Firestore } from "@google-cloud/firestore";
 import express from "express";
-import { slackNotifier } from "./slack/slack-notifier";
+import { DEFAULT_EVENT, slackNotifier } from "./slack/slack-notifier";
 
 import { NextFunction, Request, Response } from "express";
 
@@ -28,6 +28,7 @@ export abstract class JWTAbstractController {
 
         this.db.collection(this.collection).get()
             .then((snapshot) => {
+                throw new Error("KABOUMM");
                 if (snapshot.empty) {
                     console.warn(`Getting all ${this.collection} documents : no document found`);
                     res.json([]);
@@ -37,13 +38,7 @@ export abstract class JWTAbstractController {
                     res.json(docs.map((d) => d.data()));
                 }
             })
-            .catch((err) => {
-                console.error(`Error getting ${this.collection}`, err);
-                slackNotifier.emit("slack-notification",
-                    `Error Getting all ${this.collection} documents`,
-                    JSON.stringify(err));
-                res.status(500).send(err);
-            });
+            .catch((err) => this.errorHandler(err, res, `Error getting all ${this.collection} documents`));
     }
 
     protected save = <T>(
@@ -71,10 +66,7 @@ export abstract class JWTAbstractController {
                 console.log(`${successmsg} at ${w.writeTime.toDate()}`);
                 res.status(201).json(req.body);
             })
-            .catch((err) => {
-                console.error(`Error saving ${this.collection}`, err);
-                res.status(500).send(err);
-            });
+            .catch((err) => this.errorHandler(err, res, `Error saving ${this.collection} document in Firestore`));
     }
 
     protected delete = (
@@ -94,9 +86,20 @@ export abstract class JWTAbstractController {
                 console.log(`${this.collection} document deleted at ${w.writeTime.toDate()}`);
                 res.sendStatus(200);
             })
-            .catch((err) => {
-                console.error(`Error deleting ${this.collection} document ${document}`, err);
-                res.status(500).send(err);
-            });
+            .catch((err) => this.errorHandler(err, res, `Error deleting ${this.collection} document ${document}`));
     }
+
+    private errorHandler = (
+        err: Error,
+        res: Response,
+        msg: string,
+    ) => {
+        console.error(msg, err);
+        const error = { error: err.stack };
+        slackNotifier.emit(DEFAULT_EVENT,
+            msg,
+            JSON.stringify(error));
+        res.status(500).send(error);
+    }
+
 }

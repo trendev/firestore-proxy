@@ -1,6 +1,7 @@
 import { EventEmitter } from "events";
 import request, { Options } from "request";
 
+export const DEFAULT_EVENT = "slack-notification";
 export const slackNotifier = new EventEmitter();
 
 const options: Options = {
