@@ -28,7 +28,6 @@ export abstract class JWTAbstractController {
 
         this.db.collection(this.collection).get()
             .then((snapshot) => {
-                throw new Error("KABOUMM");
                 if (snapshot.empty) {
                     console.warn(`Getting all ${this.collection} documents : no document found`);
                     res.json([]);

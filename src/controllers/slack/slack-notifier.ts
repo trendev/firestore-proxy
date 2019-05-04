@@ -1,27 +1,28 @@
 import { EventEmitter } from "events";
 import request, { Options } from "request";
+import slackConfig from "../../creds/slack-config.json";
 
 export const DEFAULT_EVENT = "slack-notification";
 export const slackNotifier = new EventEmitter();
 
 const options: Options = {
     headers: {
-        Authorization: "Bearer xoxp-320251608305-320251609105-514455834913-879e451e9d4600e6d5abfaffd56f798f",
+        Authorization: `Bearer ${slackConfig.token}`,
     },
     json: true,
     method: "POST",
     url: "https://slack.com/api/chat.postMessage",
 };
 
-slackNotifier.on("slack-notification", (text, footer) => {
+slackNotifier.on(DEFAULT_EVENT, (msg, error) => {
     options.body = {
         attachments:
             [{
                 color: "#FF0000",
-                footer: `${footer}`,
-                text: `*${text}*`,
+                footer: `${error}`,
+                text: `*${msg}*`,
             }],
-        channel: "GF6D78C6A",
+        channel: slackConfig.channel,
     };
 
     request(options, (err, response, body) => {
