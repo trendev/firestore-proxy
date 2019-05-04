@@ -7,7 +7,8 @@
     "build": "tslint --fix 'src/**/*.ts' && rm -rf dist/ && tsc",
     "tsc": "tsc",
     "tslint": "tslint --fix 'src/**/*.ts'",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node dist/server.js"
   },
   "repository": {
     "type": "git",

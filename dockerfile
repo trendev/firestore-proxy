@@ -1,4 +1,4 @@
-FROM node:8
+FROM node:8-alpine
 
 WORKDIR /usr/src/app
 
@@ -6,9 +6,10 @@ COPY package*.json ./
 
 RUN npm install
 
-COPY src .
+COPY src ./src
 COPY ts*.json ./
 
 RUN npm run tsc
 
 EXPOSE 9000
+CMD [ "npm", "start" ]
