@@ -1,6 +1,6 @@
 import { Firestore } from "@google-cloud/firestore";
 import express from "express";
-import { slackNotifier } from "./slack/slack-controller";
+import { slackNotifier } from "./slack/slack-notifier";
 
 import { NextFunction, Request, Response } from "express";
 
