@@ -28,11 +28,6 @@ export abstract class JWTAbstractController {
 
         this.db.collection(this.collection).get()
             .then((snapshot) => {
-                slackNotifier.emit("slack-notification",
-                    `Error Getting all ${this.collection} documents`,
-                    JSON.stringify({
-                        err: "this is an error",
-                    }));
                 if (snapshot.empty) {
                     console.warn(`Getting all ${this.collection} documents : no document found`);
                     res.json([]);
@@ -44,6 +39,9 @@ export abstract class JWTAbstractController {
             })
             .catch((err) => {
                 console.error(`Error getting ${this.collection}`, err);
+                slackNotifier.emit("slack-notification",
+                    `Error Getting all ${this.collection} documents`,
+                    JSON.stringify(err));
                 res.status(500).send(err);
             });
     }
