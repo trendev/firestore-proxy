@@ -1,5 +1,6 @@
 import { Firestore } from "@google-cloud/firestore";
 import express from "express";
+import { slackNotifier } from "./slack/slack-controller";
 
 import { NextFunction, Request, Response } from "express";
 
@@ -27,6 +28,11 @@ export abstract class JWTAbstractController {
 
         this.db.collection(this.collection).get()
             .then((snapshot) => {
+                slackNotifier.emit("slack-notification",
+                    `Error Getting all ${this.collection} documents`,
+                    JSON.stringify({
+                        err: "this is an error",
+                    }));
                 if (snapshot.empty) {
                     console.warn(`Getting all ${this.collection} documents : no document found`);
                     res.json([]);
