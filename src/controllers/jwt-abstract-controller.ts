@@ -6,16 +6,23 @@ import { NextFunction, Request, Response } from "express";
 
 export abstract class JWTAbstractController {
 
-    public readonly abstract collection: string;
-
+    protected readonly abstract collection: string;
+    private readonly _pathSuffix: string;
     private _router: express.Router;
 
     public constructor(protected db: Firestore) {
         this._router = express.Router();
+
+        // set a specific suffix for pre-production, preventing to use the production collections
+        this._pathSuffix = (process.env.NODE_ENV === "preprod") ? "-preprod" : "";
     }
 
     public Router() {
         return this._router;
+    }
+
+    private get path() {
+        return this.collection + this._pathSuffix;
     }
 
     protected debugInputBody = (req: Request, res: Response, next: NextFunction) => {
@@ -26,7 +33,7 @@ export abstract class JWTAbstractController {
     protected getAll = (req: Request, res: Response, next: NextFunction) => {
         console.log(`Getting all ${this.collection} documents`);
 
-        this.db.collection(this.collection).get()
+        this.db.collection(this.path).get()
             .then((snapshot) => {
                 if (snapshot.empty) {
                     console.warn(`Getting all ${this.collection} documents : no document found`);
@@ -58,7 +65,7 @@ export abstract class JWTAbstractController {
             throw new Error("Document id is not set");
         }
 
-        this.db.collection(this.collection)
+        this.db.collection(this.path)
             .doc(document)
             .set(entry)
             .then((w) => {
@@ -78,7 +85,7 @@ export abstract class JWTAbstractController {
             throw new Error("Document id is not set");
         }
 
-        this.db.collection(this.collection)
+        this.db.collection(this.path)
             .doc(document)
             .delete()
             .then((w) => {

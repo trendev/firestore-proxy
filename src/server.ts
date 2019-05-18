@@ -8,6 +8,10 @@ import { JWTRevokedSetController } from "./controllers/jwt-revoked-set-controlle
 import { JWTWhiteMapController } from "./controllers/jwt-white-map-controller.js";
 import creds from "./creds/service-account-key.json";
 
+if (process.env.NODE_ENV === "preprod") {
+    console.log("## Running on pre-production environmemnt, an extension will be added to the collection path");
+}
+
 const credentials = creds as ServiceAccount;
 admin.initializeApp({
     credential: admin.credential.cert(credentials),
