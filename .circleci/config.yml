@@ -13,4 +13,4 @@ jobs:
           command: docker login -u $DOCKER_USER -p $DOCKER_PASS
       - run:
           name: push PRODUCTION image
-          command: docker push -t -t trendev/firestore-proxy
+          command: docker push -t trendev/firestore-proxy
