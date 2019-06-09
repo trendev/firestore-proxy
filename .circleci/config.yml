@@ -14,7 +14,7 @@ jobs:
       - run:
           name: docker push
           command: docker push $DOCKER_IMAGE:latest
-  build:
+  build: # generic job for other branches
     machine:
       docker_layer_caching: true
     steps:
@@ -40,3 +40,15 @@ workflows:
         filters:
             branches:
               ignore: master
+  nightly:
+    triggers:
+      - schedule:
+          cron: "0 18 * * *"
+          filters:
+            branches:
+              ignore:
+                - master
+                - preprod
+                - preview
+    jobs:
+      - build
