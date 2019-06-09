@@ -41,10 +41,14 @@ workflows:
     jobs:
     - login
     - build_prod:
-          filters:
+        requires:
+          - login
+        filters:
             branches:
               only: master
     - build_preprod:
-          filters:
+        requires:
+          - login
+        filters:
             branches:
               only: preprod
