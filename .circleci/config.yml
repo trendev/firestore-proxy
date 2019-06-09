@@ -1,0 +1,10 @@
+version: 2
+jobs:
+  build_production:
+    machine:
+      docker_layer_caching: true
+    steps:
+      - checkout
+      - run:
+          name: build firestore-proxy
+          command: docker build -t trendev/firestore-proxy .
