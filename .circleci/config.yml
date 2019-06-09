@@ -40,15 +40,3 @@ workflows:
         filters:
             branches:
               ignore: master
-  nightly:
-    triggers:
-      - schedule:
-          cron: "0 18 * * *"
-          filters:
-            branches:
-              ignore:
-                - master
-                - preprod
-                - preview
-    jobs:
-      - build
