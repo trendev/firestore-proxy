@@ -1,12 +1,5 @@
 version: 2
 jobs:
-  login:
-    machine:
-      docker_layer_caching: true
-    steps:
-      - run:
-          name : login
-          command: docker login -u $DOCKER_USER -p $DOCKER_PASS
   build_prod:
     machine:
       docker_layer_caching: true
@@ -14,13 +7,13 @@ jobs:
       - checkout
       - run:
           name: build
-          command: docker build -t trendev/firestore-proxy .
-      # - run:
-      #     name : login
-      #     command: docker login -u $DOCKER_USER -p $DOCKER_PASS
+          command: docker build -t $DOCKER_IMAGE .
+      - run:
+          name : login
+          command: docker login -u $DOCKER_USER -p $DOCKER_PASS
       - run:
           name: push
-          command: docker push trendev/firestore-proxy
+          command: docker push $DOCKER_IMAGE
   build_preprod:
     machine:
       docker_layer_caching: true
@@ -28,27 +21,22 @@ jobs:
       - checkout
       - run:
           name: build
-          command: docker build -t trendev/firestore-proxy:preprod -f preprod.Dockerfile .
-      # - run:
-      #     name : login
-      #     command: docker login -u $DOCKER_USER -p $DOCKER_PASS
+          command: docker build -t $DOCKER_IMAGE:preprod -f preprod.Dockerfile .
+      - run:
+          name : login
+          command: docker login -u $DOCKER_USER -p $DOCKER_PASS
       - run:
           name: push
-          command: docker push trendev/firestore-proxy:preprod
+          command: docker push $DOCKER_IMAGE:preprod
 workflows:
   version: 2
   build_push:
     jobs:
-    - login
     - build_prod:
-        requires:
-          - login
         filters:
             branches:
               only: master
     - build_preprod:
-        requires:
-          - login
         filters:
             branches:
               only: preprod
