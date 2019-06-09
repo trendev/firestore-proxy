@@ -32,11 +32,11 @@ workflows:
   version: 2
   commit:
     jobs:
-    - build_prod:
+    - build_master:
         filters:
             branches:
               only: master
     - build:
         filters:
             branches:
-              only: preprod
+              ignore: master
