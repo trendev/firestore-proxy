@@ -14,14 +14,13 @@ export class JWTWhiteMapController extends JWTAbstractController {
 
     private init() {
         this.Router()
-            // .use("/", this.debugInputBody)
-            .get("/", this.getAll)
-            .post("/", this._create)
-            .put("/", this._update)
-            .delete("/:email", this._delete);
+            .get("/", (req, resp, next) => this.getAll(req, resp, next))
+            .post("/", (req, resp, next) => this._create(req, resp, next))
+            .put("/", (req, resp, next) => this._update(req, resp, next))
+            .delete("/:email", (req, resp, next) => this._delete(req, resp, next));
     }
 
-    private _create = (req: Request, res: Response, next: NextFunction) => {
+    private _create(req: Request, res: Response, next: NextFunction) {
 
         const entry: JWTWhiteMapEntry = req.body;
 
@@ -36,7 +35,7 @@ export class JWTWhiteMapController extends JWTAbstractController {
             `${this.collection} document created`);
     }
 
-    private _update = (req: Request, res: Response, next: NextFunction) => {
+    private _update(req: Request, res: Response, next: NextFunction) {
         const entry: JWTWhiteMapEntry = req.body;
 
         console.log(`Updating ${this.collection} document for user [${entry.email}]`);
@@ -50,7 +49,7 @@ export class JWTWhiteMapController extends JWTAbstractController {
             `${this.collection} document updated`);
     }
 
-    private _delete = (req: Request, res: Response, next: NextFunction) => {
+    private _delete(req: Request, res: Response, next: NextFunction) {
 
         console.log(`Deleting ${this.collection} document for user [${req.params.email}]`);
 

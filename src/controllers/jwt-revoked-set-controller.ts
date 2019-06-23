@@ -13,13 +13,12 @@ export class JWTRevokedSetController extends JWTAbstractController {
 
     private init() {
         this.Router()
-            // .use("/", this.debugInputBody)
-            .get("/", this.getAll)
-            .post("/", this._create)
-            .delete("/:token", this._delete);
+            .get("/", (req, resp, next) => this.getAll(req, resp, next))
+            .post("/", (req, resp, next) => this._create(req, resp, next))
+            .delete("/:token", (req, resp, next) => this._delete(req, resp, next));
     }
 
-    private _create = (req: Request, res: Response, next: NextFunction) => {
+    private _create(req: Request, res: Response, next: NextFunction) {
         const entry: JWTRecord = req.body;
 
         console.log(`Creating ${this.collection} document`);
@@ -33,7 +32,7 @@ export class JWTRevokedSetController extends JWTAbstractController {
             `${this.collection} document created`);
     }
 
-    private _delete = (req: Request, res: Response, next: NextFunction) => {
+    private _delete(req: Request, res: Response, next: NextFunction) {
         console.log(`Deleting ${this.collection} document [${req.params.token}]`);
 
         this.delete(

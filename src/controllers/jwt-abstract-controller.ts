@@ -25,12 +25,12 @@ export abstract class JWTAbstractController {
         return this.collection + this._pathSuffix;
     }
 
-    protected debugInputBody = (req: Request, res: Response, next: NextFunction) => {
+    protected debugInputBody(req: Request, res: Response, next: NextFunction) {
         console.log("Request Body : " + JSON.stringify(req.body, null, 2));
         next();
     }
 
-    protected getAll = (req: Request, res: Response, next: NextFunction) => {
+    protected getAll(req: Request, res: Response, next: NextFunction) {
         console.log(`Getting all ${this.collection} documents`);
 
         this.db.collection(this.path).get()
@@ -47,13 +47,13 @@ export abstract class JWTAbstractController {
             .catch((err) => this.errorHandler(err, res, `Error getting all ${this.collection} documents`));
     }
 
-    protected save = <T>(
+    protected save<T>(
         req: Request,
         res: Response,
         next: NextFunction,
         entry: T,
         document: string,
-        successmsg: string) => {
+        successmsg: string) {
 
         console.log(`Saving ${this.collection} document in Firestore`);
 
@@ -75,11 +75,11 @@ export abstract class JWTAbstractController {
             .catch((err) => this.errorHandler(err, res, `Error saving ${this.collection} document in Firestore`));
     }
 
-    protected delete = (
+    protected delete(
         req: Request,
         res: Response,
         next: NextFunction,
-        document: string) => {
+        document: string) {
 
         if (!document) {
             throw new Error("Document id is not set");
@@ -95,11 +95,7 @@ export abstract class JWTAbstractController {
             .catch((err) => this.errorHandler(err, res, `Error deleting ${this.collection} document ${document}`));
     }
 
-    private errorHandler = (
-        err: Error,
-        res: Response,
-        msg: string,
-    ) => {
+    private errorHandler(err: Error, res: Response, msg: string) {
         console.error(msg, err);
         const error = { error: err.stack };
         slackNotifier.emit(DEFAULT_EVENT,
