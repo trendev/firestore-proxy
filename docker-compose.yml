@@ -1,0 +1,10 @@
+version: '3'
+services:
+  firestore-proxy-preprod:
+    build:
+      context: .
+      dockerfile: preprod.Dockerfile
+    image: trendev/firestore-proxy:preprod
+    container_name: firestore-proxy-preprod
+    ports:
+      - 9000:9000
