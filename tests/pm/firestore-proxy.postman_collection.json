@@ -1,0 +1,459 @@
+{
+	"info": {
+		"_postman_id": "d7c5b972-fce1-403c-b9a7-eb371adb8139",
+		"name": "firestore-proxy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "jwtwhitemap",
+			"item": [
+				{
+					"name": "getAll",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fc567417-f590-43a5-ae37-a59d14c11101",
+								"exec": [
+									"pm.test(\"response is 200 OK\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    pm.response.to.be.ok;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}:{{port}}/jwtwhitemap",
+							"host": [
+								"{{url}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"jwtwhitemap"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "_create",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "fef24477-febb-4707-a186-2d6d71d61fe4",
+								"exec": [
+									"pm.environment.set('email','myemail@mydomain.com');",
+									"",
+									"var now = new Date();",
+									"var exp = new Date();",
+									"exp.setHours(now.getHours()+1);  // expires in 1 hour",
+									"",
+									"pm.environment.set('creation_time',now);",
+									"pm.environment.set('expiration_time',exp);",
+									"pm.environment.set('token','jwt');"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "90996738-9025-4be8-b536-2b4d7a6ea1e4",
+								"exec": [
+									"pm.test('response is Created - 201',function(){",
+									"    pm.response.to.have.status(201);",
+									"    pm.response.to.be.success;",
+									"    pm.expect(pm.response.reason()).to.equal('Created');",
+									"});",
+									"",
+									"pm.test('response has a body',function(){",
+									"    pm.response.to.have.body();",
+									"});",
+									"",
+									"pm.test('name is defined',function(){",
+									"    pm.response.to.have.jsonBody('email');",
+									"     pm.expect(pm.response.json().email).to.equal(pm.environment.get('email'));",
+									"});",
+									"",
+									"pm.test('records is an array containing 1 element',function(){",
+									"    pm.response.to.have.jsonBody('records');",
+									"    pm.expect(pm.response.json().records).to.not.be.undefined;",
+									"    pm.expect(pm.response.json().records.length).to.equal(1);",
+									"});",
+									"",
+									"",
+									"pm.test('the record is the expected one',function(){",
+									"    ",
+									"    var record = pm.response.json().records[0];",
+									"",
+									"    pm.expect(record.creationTime).to.equal(pm.environment.get('creation_time'));",
+									"    pm.expect(record.expirationTime).to.equal(pm.environment.get('expiration_time'));",
+									"    pm.expect(record.token).to.equal(pm.environment.get('token'));",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"{{email}}\",\n\t\"records\":[\n\t\t{\n\t\t\t\"creationTime\":\"{{creation_time}}\",\n\t\t\t\"expirationTime\":\"{{expiration_time}}\",\n\t\t\t\"token\": \"{{token}}\"\n\t\t}\n\t]\n}"
+						},
+						"url": {
+							"raw": "{{url}}:{{port}}/jwtwhitemap",
+							"host": [
+								"{{url}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"jwtwhitemap"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "_update",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "fef24477-febb-4707-a186-2d6d71d61fe4",
+								"exec": [
+									"pm.environment.set('email','myemail@mydomain.com');",
+									"",
+									"var now = new Date();",
+									"var exp = new Date();",
+									"exp.setHours(now.getHours()+1);  // expires in 1 hour",
+									"",
+									"pm.environment.set('creation_time2',now);",
+									"pm.environment.set('expiration_time2',exp);",
+									"pm.environment.set('token2','jwt2');"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "90996738-9025-4be8-b536-2b4d7a6ea1e4",
+								"exec": [
+									"pm.test('response is Created - 201',function(){",
+									"    pm.response.to.have.status(201);",
+									"    pm.response.to.be.success;",
+									"    pm.expect(pm.response.reason()).to.equal('Created');",
+									"});",
+									"",
+									"pm.test('response has a body',function(){",
+									"    pm.response.to.have.body();",
+									"});",
+									"",
+									"pm.test('name is defined',function(){",
+									"    pm.response.to.have.jsonBody('email');",
+									"     pm.expect(pm.response.json().email).to.equal(pm.environment.get('email'));",
+									"});",
+									"",
+									"pm.test('records is an array containing 2 elements',function(){",
+									"    pm.response.to.have.jsonBody('records');",
+									"    pm.expect(pm.response.json().records).to.not.be.undefined;",
+									"    pm.expect(pm.response.json().records.length).to.equal(2);",
+									"});",
+									"",
+									"",
+									"pm.test('the first record is the expected one',function(){",
+									"    ",
+									"    var record = pm.response.json().records[0];",
+									"",
+									"    pm.expect(record.creationTime).to.equal(pm.environment.get('creation_time'));",
+									"    pm.expect(record.expirationTime).to.equal(pm.environment.get('expiration_time'));",
+									"    pm.expect(record.token).to.equal(pm.environment.get('token'));",
+									"    ",
+									"    ",
+									"});",
+									"",
+									"pm.test('the second record is the expected one',function(){",
+									"    ",
+									"    var record = pm.response.json().records[1];",
+									"",
+									"    pm.expect(record.creationTime).to.equal(pm.environment.get('creation_time2'));",
+									"    pm.expect(record.expirationTime).to.equal(pm.environment.get('expiration_time2'));",
+									"    pm.expect(record.token).to.equal(pm.environment.get('token2'));",
+									"    ",
+									"    ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"{{email}}\",\n\t\"records\":[\n\t\t{\n\t\t\t\"creationTime\":\"{{creation_time}}\",\n\t\t\t\"expirationTime\":\"{{expiration_time}}\",\n\t\t\t\"token\": \"{{token}}\"\n\t\t},\n\t\t{\n\t\t\t\"creationTime\":\"{{creation_time2}}\",\n\t\t\t\"expirationTime\":\"{{expiration_time2}}\",\n\t\t\t\"token\": \"{{token2}}\"\n\t\t}\n\t]\n}"
+						},
+						"url": {
+							"raw": "{{url}}:{{port}}/jwtwhitemap",
+							"host": [
+								"{{url}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"jwtwhitemap"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "_delete",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "fef24477-febb-4707-a186-2d6d71d61fe4",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "90996738-9025-4be8-b536-2b4d7a6ea1e4",
+								"exec": [
+									"pm.test('response is OK - 200',function(){",
+									"    pm.response.to.have.status(200);",
+									"    pm.response.to.be.ok;",
+									"    pm.expect(pm.response.reason()).to.equal('OK');",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{url}}:{{port}}/jwtwhitemap/{{email}}",
+							"host": [
+								"{{url}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"jwtwhitemap",
+								"{{email}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "jwtrevokedset",
+			"item": [
+				{
+					"name": "getAll",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "948aa486-1827-41a9-80dc-d59626f8e29b",
+								"exec": [
+									"pm.test(\"response is 200 OK\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    pm.response.to.be.ok;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}:{{port}}/jwtrevokedset",
+							"host": [
+								"{{url}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"jwtrevokedset"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "_create",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "fef24477-febb-4707-a186-2d6d71d61fe4",
+								"exec": [
+									"var now = new Date();",
+									"var exp = new Date();",
+									"exp.setHours(now.getHours()+1);  // expires in 1 hour",
+									"",
+									"pm.environment.set('creation_time',now);",
+									"pm.environment.set('expiration_time',exp);",
+									"pm.environment.set('token','jwt');"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "90996738-9025-4be8-b536-2b4d7a6ea1e4",
+								"exec": [
+									"pm.test('response is Created - 201',function(){",
+									"    pm.response.to.have.status(201);",
+									"    pm.response.to.be.success;",
+									"    pm.expect(pm.response.reason()).to.equal('Created');",
+									"});",
+									"",
+									"pm.test('response has a body',function(){",
+									"    pm.response.to.have.body();",
+									"});",
+									"",
+									"pm.test('the record is the expected one',function(){",
+									"    ",
+									"    var record = pm.response.json();",
+									"",
+									"    pm.response.to.have.jsonBody('creationTime');",
+									"    pm.expect(record.creationTime).to.equal(pm.environment.get('creation_time'));",
+									"    ",
+									"    pm.response.to.have.jsonBody('expirationTime');",
+									"    pm.expect(record.expirationTime).to.equal(pm.environment.get('expiration_time'));",
+									"    ",
+									"    pm.response.to.have.jsonBody('token');",
+									"    pm.expect(record.token).to.equal(pm.environment.get('token'));",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"creationTime\":\"{{creation_time}}\",\n\t\"expirationTime\":\"{{expiration_time}}\",\n\t\"token\": \"{{token}}\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}:{{port}}/jwtrevokedset",
+							"host": [
+								"{{url}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"jwtrevokedset"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "_delete",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "fef24477-febb-4707-a186-2d6d71d61fe4",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "90996738-9025-4be8-b536-2b4d7a6ea1e4",
+								"exec": [
+									"pm.test('response is OK - 200',function(){",
+									"    pm.response.to.have.status(200);",
+									"    pm.response.to.be.ok;",
+									"    pm.expect(pm.response.reason()).to.equal('OK');",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{url}}:{{port}}/jwtrevokedset/{{token}}",
+							"host": [
+								"{{url}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"jwtrevokedset",
+								"{{token}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
