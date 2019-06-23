@@ -90,7 +90,7 @@ export abstract class JWTAbstractController {
             .delete()
             .then((w) => {
                 console.log(`${this.collection} document deleted at ${w.writeTime.toDate()}`);
-                res.sendStatus(200);
+                res.status(200).json(w);
             })
             .catch((err) => this.errorHandler(err, res, `Error deleting ${this.collection} document ${document}`));
     }
