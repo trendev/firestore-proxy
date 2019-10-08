@@ -25,6 +25,10 @@ slackNotifier.on(DEFAULT_EVENT, (msg, error) => {
         channel: slackConfig.channel,
     };
 
+    if (process.env.NODE_ENV) {
+        options.body = { ...options.body, text: `Environment : *${process.env.NODE_ENV}*` };
+    }
+
     request(options, (err, response, body) => {
         if (err) {
             console.error(err);
