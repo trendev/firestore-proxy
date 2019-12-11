@@ -8,6 +8,7 @@ import { JWTRevokedSetController } from "./controllers/jwt-revoked-set-controlle
 import { JWTWhiteMapController } from "./controllers/jwt-white-map-controller.js";
 import creds from "./creds/service-account-key.json";
 
+// display the environment at startup
 if (process.env.NODE_ENV === "preprod" || process.env.NODE_ENV === "dev") {
     console.log(`## Running on ${process.env.NODE_ENV} environmemnt ##`);
     console.log(`## An extension "-${process.env.NODE_ENV}" will be added to the collection path ## `);
