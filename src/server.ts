@@ -33,4 +33,4 @@ app.use("/jwtwhitemap", jwtwmctrl.Router());
 app.use("/jwtrevokedset", jwtrsctrl.Router());
 
 const port = process.env.PORT || 9000;
-app.listen(port, () => console.log(`${Date()} : Server started and listening on port [ ${port} ]`));
+app.listen(port, () => console.log(`${Date()} : NodeJS server ${process.version} is started and listening on port [ ${port} ]`));
