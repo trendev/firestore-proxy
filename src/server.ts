@@ -9,7 +9,7 @@ import { JWTWhiteMapController } from "./controllers/jwt-white-map-controller.js
 import creds from "./creds/service-account-key.json";
 
 if (!process.env.NODE_ENV) {
-    console.error("Starting nodejs server : NODE_ENV must be provided !!!");
+    console.error("Starting NodeJS server : NODE_ENV must be provided !!!");
     process.exit(1);
 }
 
