@@ -27,7 +27,10 @@ const db = admin.firestore();
 const app: express.Application = express();
 
 app.get("/health-check", (req, res) => {
-    res.send("Health check passed");
+    res.send({
+        message: "Health check passed",
+        status: "ok"
+    });
 });
 
 app.use(morgan("dev"));
