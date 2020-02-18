@@ -13,18 +13,12 @@ export abstract class JWTAbstractController {
     public constructor(protected db: Firestore) {
         this._router = express.Router();
 
-        // set a specific path suffic, preventing using another environment collection
-        switch (process.env.NODE_ENV) {
-            case "dev":
-            case "preprod": {
-                this._pathSuffix = `-${process.env.NODE_ENV}`;
-                break;
-            }
-            default: {
-                this._pathSuffix = "";
-                break;
-            }
+        if (!process.env.NODE_ENV) {
+            throw Error("Building a controller : NODE_ENV must be provided !!!");
+        } else {
+            this._pathSuffix = `-${process.env.NODE_ENV}`;
         }
+
     }
 
     public Router() {

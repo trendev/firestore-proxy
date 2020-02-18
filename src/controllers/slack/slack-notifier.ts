@@ -27,6 +27,8 @@ slackNotifier.on(DEFAULT_EVENT, (msg, error) => {
 
     if (process.env.NODE_ENV) {
         options.body = { ...options.body, text: `Environment : *${process.env.NODE_ENV}*` };
+    } else {
+        throw Error("NODE_ENV must be provided for Slack notifications !");
     }
 
     request(options, (err, response, body) => {
