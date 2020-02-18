@@ -12,6 +12,18 @@
             "check-format",
             "allow-leading-underscore",
             "allow-trailing-underscore"
+        ],
+        "trailing-comma": [
+            true,
+            {
+                "singleline": "never",
+                "multiline": {
+                    "objects": "ignore",
+                    "arrays": "always",
+                    "functions": "never",
+                    "typeLiterals": "ignore"
+                }
+            }
         ]
     },
     "rulesDirectory": []
