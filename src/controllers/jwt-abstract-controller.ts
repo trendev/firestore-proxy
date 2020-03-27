@@ -67,14 +67,15 @@ export abstract class JWTAbstractController {
             throw new Error("Document id is not set");
         }
 
-        this.db.collection(this.path)
-            .doc(document)
-            .set(entry)
-            .then((w) => {
+        this.execute(
+            this.db.collection(this.path).doc(document).set(entry),
+            (w) => {
                 console.log(`${successmsg} at ${w.writeTime.toDate()}`);
                 res.status(201).json(req.body);
-            })
-            .catch((err) => this.errorHandler(err, res, `Error saving ${this.collection} document in Firestore`));
+            },
+            (err) => this.errorHandler(err, res, `Error saving ${this.collection} document in Firestore`)
+        );
+
     }
 
     protected delete(
