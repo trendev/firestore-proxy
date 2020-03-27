@@ -35,8 +35,9 @@ export abstract class JWTAbstractController {
     protected getAll(req: Request, res: Response, next: NextFunction) {
         console.log(`Getting all ${this.collection} documents`);
 
-        this.db.collection(this.path).get()
-            .then((snapshot) => {
+        this.execute(
+            this.db.collection(this.path).get(),
+            (snapshot) => {
                 if (snapshot.empty) {
                     console.warn(`Getting all ${this.collection} documents : no document found`);
                     res.json([]);
@@ -45,8 +46,9 @@ export abstract class JWTAbstractController {
                     const docs = snapshot.docs;
                     res.json(docs.map((d) => d.data()));
                 }
-            })
-            .catch((err) => this.errorHandler(err, res, `Error getting all ${this.collection} documents`));
+            },
+            (err) => this.errorHandler(err, res, `Error getting all ${this.collection} documents`)
+        );
     }
 
     protected save<T>(
