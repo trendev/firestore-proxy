@@ -32,11 +32,6 @@ export abstract class JWTAbstractController {
         return this.collection + this._pathSuffix;
     }
 
-    protected debugInputBody(req: Request, res: Response, next: NextFunction) {
-        console.log("Request Body : " + JSON.stringify(req.body, null, 2));
-        next();
-    }
-
     protected getAll(req: Request, res: Response, next: NextFunction) {
         console.log(`Getting all ${this.collection} documents`);
 
