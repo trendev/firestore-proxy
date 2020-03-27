@@ -87,7 +87,7 @@ export abstract class JWTAbstractController {
             throw new Error("Document id is not set");
         }
 
-        this.execute(
+        this.execute<FirebaseFirestore.WriteResult>(
             this.db.collection(this.path).doc(document).delete(),
             (w) => {
                 console.log(`${this.collection} document deleted at ${w.writeTime.toDate()}`);
@@ -107,7 +107,7 @@ export abstract class JWTAbstractController {
 
     private execute<T>(
         p: Promise<T>,
-        success: (result: any) => void,
+        success: (result: T) => void,
         error: (err: any) => void) {
         from(p)
             .pipe(
