@@ -87,19 +87,13 @@ export abstract class JWTAbstractController {
             throw new Error("Document id is not set");
         }
 
-        from(this.db.collection(this.path)
-            .doc(document)
-            .delete()
-        ).pipe(
-            retry(5),
-            take(1)
-        ).subscribe(
+        this.execute(
+            this.db.collection(this.path).doc(document).delete(),
             (w) => {
                 console.log(`${this.collection} document deleted at ${w.writeTime.toDate()}`);
                 res.status(200).json(w);
             },
-            (err) => this.errorHandler(err, res, `Error deleting ${this.collection} document ${document}`)
-        );
+            (err) => this.errorHandler(err, res, `Error deleting ${this.collection} document ${document}`));
     }
 
     private errorHandler(err: Error, res: Response, msg: string) {
@@ -109,6 +103,20 @@ export abstract class JWTAbstractController {
             msg,
             JSON.stringify(error));
         res.status(500).send(error);
+    }
+
+    private execute<T>(
+        p: Promise<T>,
+        success: (result: any) => void,
+        error: (err: any) => void) {
+        from(p)
+            .pipe(
+                retry(5),
+                take(1))
+            .subscribe(
+                (r) => success(r),
+                (err) => error(err)
+            );
     }
 
 }
