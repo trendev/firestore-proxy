@@ -4,6 +4,9 @@ import { DEFAULT_EVENT, slackNotifier } from "./slack/slack-notifier";
 
 import { NextFunction, Request, Response } from "express";
 
+import { from } from 'rxjs';
+import { retry, take } from 'rxjs/operators';
+
 export abstract class JWTAbstractController {
 
     protected readonly abstract collection: string;
@@ -89,14 +92,19 @@ export abstract class JWTAbstractController {
             throw new Error("Document id is not set");
         }
 
-        this.db.collection(this.path)
+        from(this.db.collection(this.path)
             .doc(document)
             .delete()
-            .then((w) => {
+        ).pipe(
+            retry(5),
+            take(1)
+        ).subscribe(
+            (w) => {
                 console.log(`${this.collection} document deleted at ${w.writeTime.toDate()}`);
                 res.status(200).json(w);
-            })
-            .catch((err) => this.errorHandler(err, res, `Error deleting ${this.collection} document ${document}`));
+            },
+            (err) => this.errorHandler(err, res, `Error deleting ${this.collection} document ${document}`)
+        );
     }
 
     private errorHandler(err: Error, res: Response, msg: string) {
