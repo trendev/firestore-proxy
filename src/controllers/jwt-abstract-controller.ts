@@ -112,6 +112,7 @@ export abstract class JWTAbstractController {
         p: Promise<T>,
         success: (result: T) => void,
         error: (err: any) => void) {
+        console.log('Executing a request...');
         from(p)
             .pipe(
                 retry(5),
