@@ -4,8 +4,8 @@ import { DEFAULT_EVENT, slackNotifier } from "./slack/slack-notifier";
 
 import { NextFunction, Request, Response } from "express";
 
-import { from } from 'rxjs';
-import { retry, take } from 'rxjs/operators';
+import { from, timer } from 'rxjs';
+import { tap, retryWhen, delayWhen, take } from 'rxjs/operators';
 
 export abstract class JWTAbstractController {
 
@@ -113,9 +113,14 @@ export abstract class JWTAbstractController {
         success: (result: T) => void,
         error: (err: any) => void) {
         console.log('Executing a request...');
+
         from(p)
             .pipe(
-                retry(5),
+                retryWhen(errors =>
+                    errors.pipe(
+                        tap(err => console.error(`An error occurs requesting Firestore : ${err}`)),
+                        delayWhen(err => timer(200))
+                    )),
                 take(1))
             .subscribe(
                 (r) => success(r),
