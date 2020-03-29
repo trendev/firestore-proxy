@@ -119,7 +119,8 @@ export abstract class JWTAbstractController {
                 retryWhen(errors =>
                     errors.pipe(
                         tap(err => console.error(`At ${new Date()}, an error occurs requesting Firestore : ${err}`)),
-                        delayWhen(err => timer(200))
+                        delayWhen(err => timer(200)),
+                        take(5)
                     )),
                 take(1))
             .subscribe(
