@@ -12,8 +12,11 @@ jobs:
           name: docker build
           command: DOCKER_BUILDKIT=1 docker build -t $IMAGE_NAME --build-arg BUILDKIT_INLINE_CACHE=1 .
       - run:
+          name: set $TAG
+          command : TAG="$(echo $CIRCLE_SHA1 | cut -c1-8)" | echo $TAG
+      - run:
           name: docker tag
-          command: docker tag $IMAGE_NAME $IMAGE_NAME:$CIRCLE_SHA1
+          command: docker tag $IMAGE_NAME $IMAGE_NAME:$TAG
       - run:
           name: docker login
           command: docker login -u $DOCKER_USER -p $DOCKER_PASS
@@ -21,8 +24,8 @@ jobs:
           name: docker push $IMAGE_NAME:latest
           command: docker push $IMAGE_NAME:latest
       - run:
-          name: docker push $IMAGE_NAME:$CIRCLE_SHA1
-          command: docker push $IMAGE_NAME:$CIRCLE_SHA1
+          name: docker push $IMAGE_NAME:$TAG
+          command: docker push $IMAGE_NAME:$TAG
   build: # generic job for other branches
     environment:
       IMAGE_NAME : trendev/firestore-proxy
