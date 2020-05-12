@@ -4,8 +4,8 @@ import { DEFAULT_EVENT, slackNotifier } from "./slack/slack-notifier";
 
 import { NextFunction, Request, Response } from "express";
 
-import { from, timer, throwError } from 'rxjs';
-import { tap, retryWhen, delayWhen, take, catchError } from 'rxjs/operators';
+import { from, timer } from 'rxjs';
+import { retryWhen, delayWhen, take, map } from 'rxjs/operators';
 
 export abstract class JWTAbstractController {
 
@@ -114,19 +114,24 @@ export abstract class JWTAbstractController {
         error: (err: any) => void) {
         console.log('Executing a request...');
 
+        const MAX = 10;
+
         from(p)
             .pipe(
                 retryWhen(errors =>
                     errors.pipe(
-                        tap(err => console.error(`At ${new Date()}, an error occurs requesting Firestore : ${err}`)),
+                        map((err, index) => {
+                            if (index + 1 >= MAX) {
+                                console.error(`Sorry, there was no result after ${MAX} retries`);
+                                error(err);
+                            }
+                            console.error(`At ${new Date()} - ${index + 1}/${MAX} an error occurs requesting Firestore : ${err}`);
+                            return err;
+                        }),
                         delayWhen(err => timer(500)),
-                        take(2)
+                        take(MAX)
                     )),
-                take(1),
-                catchError(err => {
-                    console.error('Error caught retrying to execute a request to Firestore');
-                    return throwError(err);
-                }))
+                take(1))
             .subscribe(
                 (r) => success(r),
                 (err) => error(err)
