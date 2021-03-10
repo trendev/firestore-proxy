@@ -1,4 +1,3 @@
-import bodyParser from "body-parser";
 import express from "express";
 import morgan from "morgan";
 
@@ -34,7 +33,7 @@ app.get("/health-check", (req, res) => {
 });
 
 app.use(morgan("dev"));
-app.use(bodyParser.json());
+app.use(express.json());
 
 const jwtwmctrl = new JWTWhiteMapController(db);
 const jwtrsctrl = new JWTRevokedSetController(db);
